@@ -26,6 +26,8 @@ class SharkData():
 			scale_l=au
 		if(self.unit_length=='pc'):
 			scale_l=pc
+		if(self.unit_length=='cm'):
+			scale_l=self.unit_l
 		print("Reading x")
 		self.x   = self.read_var(filename,'x',self.NX*self.NY)*self.unit_l/scale_l
 		print("Reading density")
@@ -40,7 +42,12 @@ class SharkData():
 			self.sd   = self.read_var(filename,'sd',self.NX*self.NY*self.ndust)
 			self.rhod_full = np.reshape(self.rhod,(self.ndust,self.NX),order = "C").T
 			self.sd_full   = np.reshape(self.sd,(self.ndust,self.NX),order = "C").T
-			
+		if(self.charging==1):
+			print("Reading resistivities")
+			self.eta_a = self.read_var(filename,'eta_a',self.NX*self.NY)
+			self.eta_o = self.read_var(filename,'eta_o',self.NX*self.NY)
+			self.eta_h = self.read_var(filename,'eta_h',self.NX*self.NY)
+
 	#Variable reader	
 	def read_var(self,filename,varname,size):
 		f=open(filename+varname, "rb")
